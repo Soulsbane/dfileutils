@@ -1,0 +1,8 @@
+name "dfileutils"
+description "Various file utilities missing from Phobos.."
+copyright "Copyright © 2016"
+authors "Paul Crane"
+targetType "library"
+configuration "library" {
+	targetType "library"
+}
