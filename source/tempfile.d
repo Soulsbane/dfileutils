@@ -36,12 +36,12 @@ struct TempFile
 		return false;
 	}
 
-	string getTempDir()
+	string getTempDir() @safe
 	{
 		return tempDir();
 	}
 
-	string getFileName()
+	string getFileName() pure @safe
 	{
 		return fileName_;
 	}
@@ -55,8 +55,8 @@ private:
 unittest
 {
 	TempFile file;
+
 	file.create("dfileutils-unittest", ".log");
-	import std.stdio : writeln;
 	writeln(file.getTempDir);
 	writeln(file.getFileName);
 	writeln(file.isOpen);
