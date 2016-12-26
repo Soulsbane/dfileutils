@@ -10,10 +10,7 @@ struct TempFile
 {
 	~this()
 	{
-		if(fileName_.exists())
-		{
-			remove(fileName_);
-		}
+		remove();
 	}
 
 	bool create(const string prefix, const string extension = string.init)
@@ -34,6 +31,16 @@ struct TempFile
 		}
 
 		return false;
+	}
+
+	bool remove()
+	{
+		if(fileName_.exists())
+		{
+			.remove(fileName_);
+		}
+
+		return fileName_.exists;
 	}
 
 	string getTempDir() @safe
