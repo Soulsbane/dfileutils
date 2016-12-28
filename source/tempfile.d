@@ -96,8 +96,11 @@ unittest
 {
 	TempFile file;
 
-	file.create("dfileutils-unittest", ".log");
+	immutable bool created = file.create("dfileutils-unittest", ".log");
+	assert(created ==  true);
+	assert(file.isOpen == true);
 	writeln(file.getTempDir);
 	writeln(file.getFileName);
-	writeln(file.isOpen);
+
+	file.writeln("hello world");
 }
