@@ -1,3 +1,6 @@
+/**
+	A simple object for creating and using a temporary file.
+*/
 module dfileutils.tempfile;
 
 import std.file : tempDir, remove, exists;
@@ -6,13 +9,25 @@ import std.uuid : randomUUID;
 import std.stdio : writeln, File;
 import std.exception : ErrnoException;
 
+//Creates a temporary file that will be removed on object destruction.
 struct TempFile
 {
+	/// Removes  the temporary file.
 	~this()
 	{
 		remove();
 	}
 
+	/**
+		Creates a temporary file.
+
+		Params:
+			prefix = An additional name to prepend to the filename ahead of the randomUUID.
+			extension = The file extension to use.
+
+		Returns:
+			True if the file was created false otherwise.
+	*/
 	bool create(const string prefix, const string extension = string.init)
 	{
 		fileName_ = buildNormalizedPath(getTempDir(), (prefix ~ "-" ~ randomUUID.toString() ~ extension));
@@ -33,6 +48,12 @@ struct TempFile
 		return false;
 	}
 
+	/**
+		Removes the temporary file.
+
+		Returns:
+			Whether the file exists.
+	*/
 	bool remove()
 	{
 		if(fileName_.exists())
@@ -43,11 +64,23 @@ struct TempFile
 		return fileName_.exists;
 	}
 
+	/**
+		Returns the path to the users temporary directory.
+
+		Returns:
+			The path to the users temporary directory.
+	*/
 	string getTempDir() @safe
 	{
 		return tempDir();
 	}
 
+	/**
+		Returns the name of the temporary file.
+
+		Returns:
+			The name of the temporary file.
+	*/
 	string getFileName() pure @safe
 	{
 		return fileName_;
