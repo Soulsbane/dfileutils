@@ -61,7 +61,7 @@ struct TempFile
 			.remove(fileName_);
 		}
 
-		return fileName_.exists;
+		return !fileName_.exists;
 	}
 
 	/**
@@ -103,4 +103,5 @@ unittest
 	writeln(file.getFileName);
 
 	file.writeln("hello world");
+	assert(file.remove() == true);
 }
