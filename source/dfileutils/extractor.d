@@ -1,5 +1,10 @@
 module dfileutils.extractor;
 
+import std.typetuple;
+import std.typecons;
+import std.algorithm;
+import std.path;
+
 private string getFilesList(T)(T list)
 {
 	return "TypeTuple!(" ~ list.map!(a => `"` ~ a ~ `"`).join(",") ~ ")";
