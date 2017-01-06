@@ -1,9 +1,15 @@
 module dfileutils.extractor;
 
+import std.algorithm : map;
+import std.array : join;
+import std.file : exists, mkdirRecurse;
+import std.path : buildNormalizedPath, dirName;
 import std.typetuple;
 import std.typecons;
-import std.algorithm;
-import std.path;
+
+import dfileutils.file;
+
+alias OverwriteExtractedFiles = Flag!"OverwriteExtractedFiles";
 
 private string getFilesList(T)(T list)
 {
@@ -59,7 +65,11 @@ void extractImportFiles(alias list, T = string)(const string path, OverwriteExtr
 			removeFileIfExists(pathWithFileName);
 		}
 
-		ensurePathExists(filePath);
+		if(!filePath.exists)
+		{
+			path.mkdirRecurse;
+		}
+
 		ensureFileExists(pathWithFileName, content);
 	}
 }

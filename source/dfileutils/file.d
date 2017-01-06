@@ -5,10 +5,6 @@ import std.string : startsWith;
 import std.path;
 import std.typecons;
 
-import dfileutils.file;
-
-alias OverwriteExtractedFiles = Flag!"OverwriteExtractedFiles";
-
 /**
 	Creates fileName if it doesn't exist.
 
