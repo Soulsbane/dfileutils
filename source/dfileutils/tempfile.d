@@ -1,5 +1,8 @@
 /**
 	A simple object for creating and using a temporary file.
+
+	Authors:
+		Paul Crane
 */
 module dfileutils.tempfile;
 

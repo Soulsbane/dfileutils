@@ -1,3 +1,9 @@
+/**
+	Various functions for working with files.
+
+	Authors:
+		Paul Crane
+*/
 module dfileutils.file;
 
 import std.file : exists, write, remove;

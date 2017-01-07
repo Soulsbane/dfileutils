@@ -1,3 +1,9 @@
+/**
+	A compile time file extractor.
+
+	Authors:
+		Paul Crane
+*/
 module dfileutils.extractor;
 
 import std.algorithm : map;
