@@ -17,7 +17,7 @@ import dfileutils.file;
 
 alias OverwriteExtractedFiles = Flag!"OverwriteExtractedFiles";
 
-private string getFilesList(T)(T list)
+private string getFilesList(T)(T list) pure @safe
 {
 	return "TypeTuple!(" ~ list.map!(a => `"` ~ a ~ `"`).join(",") ~ ")";
 }
@@ -49,7 +49,8 @@ private template GeneratorFileNames(string[] list)
 		// Each file will be will be created in this format: ./myawesomeapp/resty/template.lua
 		extractImportFiles!filesList("myawesomeapp");
 */
-void extractImportFiles(alias list, T = string)(const string path, OverwriteExtractedFiles overwrite = OverwriteExtractedFiles.yes)
+void extractImportFiles(alias list, T = string)(const string path,
+	OverwriteExtractedFiles overwrite = OverwriteExtractedFiles.yes)
 {
 	foreach(name; GeneratorFileNames!(list))
 	{
