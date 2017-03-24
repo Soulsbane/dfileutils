@@ -74,7 +74,7 @@ void extractImportFiles(alias list, T = string)(const string path,
 
 		if(!filePath.exists)
 		{
-			path.mkdirRecurse;
+			filePath.mkdirRecurse;
 		}
 
 		ensureFileExists(pathWithFileName, content);
