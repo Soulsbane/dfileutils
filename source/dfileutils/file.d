@@ -6,10 +6,16 @@
 */
 module dfileutils.file;
 
-import std.file : exists, write, remove;
+import std.file;
+import std.stdio;
 import std.string : startsWith;
 import std.path;
 import std.typecons;
+
+version(Windows)
+{
+	import win32.winnt : setAttributes, getAttributes, FILE_ATTRIBUTE_HIDDEN;
+}
 
 /**
 	Creates fileName if it doesn't exist.
@@ -85,7 +91,6 @@ bool isFileHidden(const string fileName)
 {
 	version(linux)
 	{
-		import std.path : baseName;
 		if(fileName.baseName.startsWith("."))
 		{
 			return true;
@@ -94,15 +99,42 @@ bool isFileHidden(const string fileName)
 
 	version(Windows)
 	{
-		import win32.winnt : getAttributes, FILE_ATTRIBUTE_HIDDEN;
-
-		if (getAttributes(fileName) & FILE_ATTRIBUTE_HIDDEN)
+		if(getAttributes(fileName) & FILE_ATTRIBUTE_HIDDEN)
 		{
 			return true;
 		}
 	}
 
 	return false;
+}
+
+/**
+	Creates a hidden file.
+
+ 	Params:
+		fileName = Name of the file to create.
+
+	Returns:
+		true if the fileName was created false otherwise.
+*/
+bool createHiddenFile(const string fileName)
+{
+	version(linux)
+	{
+		immutable string hiddenFileName = buildNormalizedPath(fileName.dirName, "." ~ fileName.baseName);
+		auto f = File(hiddenFileName, "w+");
+
+		return hiddenFileName.exists;
+	}
+
+	version(Windows)
+	{
+		auto f = File(fileName, "w+");
+		auto attributes = getAttributes(fileName) & FILE_ATTRIBUTE_HIDDEN;
+
+		setAttributes(fileName, attributes | FILE_ATTRIBUTE_HIDDEN);
+		return fileName.exists;
+	}
 }
 
 ///
