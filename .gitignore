@@ -5,3 +5,5 @@ __dummy.html
 *.obj
 *.a
 __test__library__
+dfileutils-test-library
+*docs
