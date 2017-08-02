@@ -181,11 +181,11 @@ void removeLines(alias predicate)(const string fileName, const ulong startLine, 
 		{
 			auto f = File(fileName, "w");
 
-			foreach (ulong currentLine, line; lines)
+			foreach(ulong currentLine, line; lines)
 			{
 				if (startLine > currentLine || currentLine >= startLine + removeLine)
 				{
-					if(predicate(currentLine))
+					if(predicate(line))
 					{
 						f.writeln(line);
 					}
