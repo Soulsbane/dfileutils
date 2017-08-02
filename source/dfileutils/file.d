@@ -167,11 +167,47 @@ void removeLines(const string fileName, const ulong startLine, const ulong remov
 	}
 }
 
+void removeLines(alias predicate)(const string fileName, const ulong startLine, const ulong removeLine)
+{
+	if(fileName.exists)
+	{
+		immutable auto lines = readText(fileName).splitLines();
+
+		if(lines.length < startLine + removeLine)
+		{
+			throw new Exception("Can't delete lines past the end of file!");
+		}
+		else
+		{
+			auto f = File(fileName, "w");
+
+			foreach (ulong currentLine, line; lines)
+			{
+				if (startLine > currentLine || currentLine >= startLine + removeLine)
+				{
+					if(predicate(currentLine))
+					{
+						f.writeln(line);
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		throw new FileException("File not found!");
+	}
+}
+
 void removeLine(const string fileName, const string lineText)
 {
 }
 
 void removeLines(const string fileName, const string lineText)
+{
+}
+
+void removeLines(alias predicate)(const string fileName, const string lineText)
 {
 }
 
