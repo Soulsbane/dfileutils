@@ -7,6 +7,7 @@
 module dfileutils.file;
 
 import std.file;
+import std.functional;
 import std.stdio;
 import std.string;
 import std.path;
@@ -199,16 +200,38 @@ void removeLines(alias predicate)(const string fileName, const ulong startLine, 
 	}
 }
 
+void removeLines(alias predicate = "a != b")(const string fileName, const string lineText, size_t amount = 1)
+{
+	if(fileName.exists)
+	{
+		alias compareFunc = binaryFun!predicate;
+		immutable auto lines = readText(fileName).splitLines();
+		auto f = File(fileName, "w");
+
+		foreach(ulong currentLine, line; lines)
+		{
+			if(compareFunc(line, lineText))
+			{
+				f.writeln(line);
+			}
+			else
+			{
+				if(amount == 1)
+				{
+					break;
+				}
+			}
+		}
+	}
+	else
+	{
+		throw new FileException("File not found!");
+	}
+}
+
 void removeLine(const string fileName, const string lineText)
 {
-}
-
-void removeLines(const string fileName, const string lineText)
-{
-}
-
-void removeLines(alias predicate)(const string fileName, const string lineText)
-{
+	removeLines(fileName, lineText);
 }
 
 ///
