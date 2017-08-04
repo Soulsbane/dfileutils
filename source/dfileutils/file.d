@@ -155,7 +155,7 @@ void removeLines(const string fileName, const ulong startLine, const ulong remov
 
 			foreach (ulong currentLine, line; lines)
 			{
-				if (startLine > currentLine || currentLine >= startLine + removeLine)
+				if(startLine > currentLine || currentLine >= startLine + removeLine)
 				{
 					f.writeln(line);
 				}
@@ -184,7 +184,7 @@ void removeLines(alias predicate)(const string fileName, const ulong startLine, 
 
 			foreach(ulong currentLine, line; lines)
 			{
-				if (startLine > currentLine || currentLine >= startLine + removeLine)
+				if(startLine > currentLine || currentLine >= startLine + removeLine)
 				{
 					if(predicate(line))
 					{
