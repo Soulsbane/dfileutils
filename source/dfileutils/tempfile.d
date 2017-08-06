@@ -6,10 +6,10 @@
 */
 module dfileutils.tempfile;
 
-import std.file : tempDir, remove, exists;
+import std.file : tempDir, remove, write, exists;
 import std.path : buildNormalizedPath;
 import std.uuid : randomUUID;
-import std.stdio : writeln, File;
+import std.stdio : writeln, write, File;
 import std.exception : ErrnoException;
 
 //Creates a temporary file that will be removed on object destruction.
@@ -89,10 +89,11 @@ struct TempFile
 		return fileName_;
 	}
 
-private:
-	string fileName_;
 	File handle_;
 	alias handle_ this;
+
+private:
+	string fileName_;
 }
 
 unittest
