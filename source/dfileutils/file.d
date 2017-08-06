@@ -200,26 +200,25 @@ void removeLines(alias predicate)(const string fileName, const ulong startLine, 
 	}
 }
 
-void removeLines(alias predicate = "a != b")(const string fileName, const string lineText, size_t amount = 1)
+void removeLines(alias predicate = "a == b")(const string fileName, const string lineText, size_t amount = 0)
 {
 	if(fileName.exists)
 	{
 		alias compareFunc = binaryFun!predicate;
+
 		immutable auto lines = readText(fileName).splitLines();
 		auto f = File(fileName, "w");
+		size_t foundCount;
 
 		foreach(ulong currentLine, line; lines)
 		{
-			if(compareFunc(line, lineText))
+			if(compareFunc(line, lineText) && (amount != foundCount || amount == 0))
 			{
-				f.writeln(line);
+				++foundCount;
 			}
 			else
 			{
-				if(amount == 1)
-				{
-					break;
-				}
+				f.writeln(line);
 			}
 		}
 	}
@@ -227,6 +226,47 @@ void removeLines(alias predicate = "a != b")(const string fileName, const string
 	{
 		throw new FileException("File not found!");
 	}
+}
+
+unittest
+{
+	immutable string testData = "
+From time to time
+The clouds give rest
+To the moon-beholders.
+
+Over the wintry
+forest, winds howl in rage
+with no leaves to blow.
+
+The lamp once out
+Cool stars enter
+The window frame.
+
+In the cicada's cry
+In the cicada's cry
+No sign can foretell
+How soon it must die.
+";
+
+	import dfileutils.tempfile;
+	import fluent.asserts;
+
+	TempFile file;
+
+	immutable bool created = file.create("dfileutils.file.unittest", ".log");
+	immutable string tempFileName = file.getFileName();
+
+	file.write(testData);
+	file.close(); // So data gets written.
+
+	auto lines = readText(tempFileName);
+	immutable size_t unmodifiedLength = lines.splitLines.length;
+
+	removeLines(tempFileName, "In the cicada's cry");
+	lines = readText(tempFileName);
+
+	lines.splitLines.length.should.equal(unmodifiedLength - 2);
 }
 
 void removeLine(const string fileName, const string lineText)
