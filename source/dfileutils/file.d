@@ -152,19 +152,22 @@ void removeLines(const string fileName, const ulong startLine, const ulong finis
 	{
 		immutable auto lines = readText(fileName).splitLines();
 
-		if(lines.length < startLine + finishLine)
+		if(startLine > 0)
 		{
-			throw new Exception("Can't delete lines past the end of file!");
-		}
-		else
-		{
-			auto f = File(fileName, "w");
-
-			foreach (ulong currentLine, line; lines)
+			if(lines.length < startLine + finishLine)
 			{
-				if(startLine > currentLine || currentLine >= startLine + finishLine)
+				throw new Exception("Can't delete lines past the end of file!");
+			}
+			else
+			{
+				auto f = File(fileName, "w");
+
+				foreach (ulong currentLine, line; lines)
 				{
-					f.writeln(line);
+					if(startLine > currentLine || currentLine >= startLine + finishLine)
+					{
+						f.writeln(line);
+					}
 				}
 			}
 		}
