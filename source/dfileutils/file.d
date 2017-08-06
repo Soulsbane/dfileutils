@@ -231,23 +231,23 @@ void removeLines(alias predicate = "a == b")(const string fileName, const string
 unittest
 {
 	immutable string testData = "
-From time to time
-The clouds give rest
-To the moon-beholders.
+		From time to time
+		The clouds give rest
+		To the moon-beholders.
 
-Over the wintry
-forest, winds howl in rage
-with no leaves to blow.
+		Over the wintry
+		forest, winds howl in rage
+		with no leaves to blow.
 
-The lamp once out
-Cool stars enter
-The window frame.
+		The lamp once out
+		Cool stars enter
+		The window frame.
 
-In the cicada's cry
-In the cicada's cry
-No sign can foretell
-How soon it must die.
-";
+		In the cicada's cry
+		In the cicada's cry
+		No sign can foretell
+		How soon it must die.
+	";
 
 	import dfileutils.tempfile;
 	import fluent.asserts;
@@ -263,7 +263,7 @@ How soon it must die.
 	auto lines = readText(tempFileName);
 	immutable size_t unmodifiedLength = lines.splitLines.length;
 
-	removeLines(tempFileName, "In the cicada's cry");
+	removeLines(tempFileName, "\t\tIn the cicada's cry");
 	lines = readText(tempFileName);
 
 	lines.splitLines.length.should.equal(unmodifiedLength - 2);
@@ -271,7 +271,7 @@ How soon it must die.
 
 void removeLine(const string fileName, const string lineText)
 {
-	removeLines(fileName, lineText);
+	removeLines(fileName, lineText, 1);
 }
 
 ///
