@@ -138,14 +138,21 @@ bool createHiddenFile(const string fileName)
 	}
 }
 
-///
-void removeLines(const string fileName, const ulong startLine, const ulong removeLine)
+/**
+	Removes lines from a file using a starting and ending line number.
+
+	Params:
+		fileName = The name of the file to remove the line from.
+		startLine = The line to start with. Must be greater than 0.
+		finishLine = The last line to remove.
+*/
+void removeLines(const string fileName, const ulong startLine, const ulong finishLine)
 {
 	if(fileName.exists)
 	{
 		immutable auto lines = readText(fileName).splitLines();
 
-		if(lines.length < startLine + removeLine)
+		if(lines.length < startLine + finishLine)
 		{
 			throw new Exception("Can't delete lines past the end of file!");
 		}
@@ -155,7 +162,7 @@ void removeLines(const string fileName, const ulong startLine, const ulong remov
 
 			foreach (ulong currentLine, line; lines)
 			{
-				if(startLine > currentLine || currentLine >= startLine + removeLine)
+				if(startLine > currentLine || currentLine >= startLine + finishLine)
 				{
 					f.writeln(line);
 				}
