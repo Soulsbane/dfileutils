@@ -178,6 +178,15 @@ void removeLines(const string fileName, const ulong startLine, const ulong finis
 	}
 }
 
+/**
+	Removes the  specified line(s) from the file.
+
+	Params:
+		predicate = The operation used to compare the line text to.
+		fileName = The name of the file to remove the line from.
+		lineText = The text to search for and remove.
+		amount = The number of line matches to remove.
+*/
 void removeLines(alias predicate = "a == b")(const string fileName, const string lineText, size_t amount = 0)
 {
 	if(fileName.exists)
@@ -247,6 +256,13 @@ unittest
 	lines.splitLines.length.should.equal(unmodifiedLength - 2);
 }
 
+/**
+	Convenience function for removeLines that only removes one occurance of lineText.
+
+	Params:
+		fileName = The name of the file to remove the line from.
+		lineText = The text to search for and remove.
+*/
 void removeLine(const string fileName, const string lineText)
 {
 	removeLines(fileName, lineText, 1);
