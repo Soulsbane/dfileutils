@@ -54,8 +54,8 @@ unittest
 {
 	import std.algorithm.comparison : equal;
 
-	/*auto expected = import(__FILE_FULL_PATH__);
-	auto result = MmText(__FILE_FULL_PATH__);
+	auto expected = import("../" ~ __FILE__);
+	auto result = MmText(__FILE__);
 
-	assert(equal(result, expected));*/
+	assert(equal(result, expected));
 }
