@@ -8,12 +8,12 @@ import std.utf : decodeFront;
 @safe:
 struct MmText {
 public:
-	this(string filename) @trusted
+	this(const string filename) @trusted
 	{
 		file_ = new MmFile(filename);
 	}
 
-	dchar front()
+	auto front()
 	{
 		auto data = nextSlice;
 		return data.decodeFront;
@@ -30,18 +30,18 @@ public:
 
 	bool empty()
 	{
-		return ulLength <= 0;
+		return getCurrentLength() <= 0;
 	}
 
 private:
-	ulong ulLength() const @trusted
+	ulong getCurrentLength() const @trusted
 	{
 		return file_.length - fileOffset_;
 	}
 
-	private string nextSlice() @property @trusted
+	string nextSlice() @property @trusted
 	{
-		auto offset = min(4, ulLength);
+		auto offset = min(4, getCurrentLength);
 		return cast(string)file_[fileOffset_ .. fileOffset_ + offset];
 	}
 
@@ -57,5 +57,10 @@ unittest
 	auto expected = import("../" ~ __FILE__);
 	auto result = MmText(__FILE__);
 
+	/*import std.stdio;
+	foreach(dat; result)
+	{
+		write(dat);
+	}*/
 	assert(equal(result, expected));
 }
