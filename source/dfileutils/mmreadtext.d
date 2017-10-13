@@ -5,10 +5,9 @@ import std.algorithm : min;
 import std.mmfile : MmFile;
 import std.utf : decodeFront;
 
-@safe:
-struct MmText {
+struct MmTextRange {
 public:
-	this(const string filename) @trusted
+	this(const string filename)
 	{
 		file_ = new MmFile(filename);
 	}
@@ -33,13 +32,18 @@ public:
 		return getCurrentLength() <= 0;
 	}
 
+	string getText()
+	{
+		return cast(string)file_[];
+	}
+
 private:
-	ulong getCurrentLength() const @trusted
+	ulong getCurrentLength() const
 	{
 		return file_.length - fileOffset_;
 	}
 
-	string nextSlice() @property @trusted
+	string nextSlice() @property
 	{
 		auto offset = min(4, getCurrentLength);
 		return cast(string)file_[fileOffset_ .. fileOffset_ + offset];
@@ -50,17 +54,26 @@ private:
 	MmFile file_;
 }
 
+string readMmText(const string fileName)
+{
+	auto f = new MmFile(fileName);
+	immutable string data = cast(string) f[];
+
+	return data;
+}
+
 unittest
 {
 	import std.algorithm.comparison : equal;
 
 	auto expected = import("../" ~ __FILE__);
-	auto result = MmText(__FILE__);
+	auto result = MmTextRange(__FILE__);
 
-	/*import std.stdio;
-	foreach(dat; result)
+	import std.stdio;
+	/*foreach(dat; result)
 	{
 		write(dat);
 	}*/
 	assert(equal(result, expected));
+	assert(equal(readMmText(__FILE__), expected));
 }
