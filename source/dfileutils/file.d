@@ -12,6 +12,7 @@ import std.stdio;
 import std.string;
 import std.path;
 import std.typecons;
+import std.datetime.systime;
 
 version(Windows)
 {
@@ -77,6 +78,34 @@ bool recreateFile(const string fileName, const string defaultData = string.init)
 {
 	removeFileIfExists(fileName);
 	return ensureFileExists(fileName, defaultData);
+}
+
+/**
+	Touches a filename ie its last modified time is changed to current time. If the file doesn't exist it is created.
+
+	Params:
+		fileName = Name of the file to touch.
+
+	Returns:
+		True if the file was touched false otherwise.
+*/
+bool touchFile(const string fileName)
+{
+	immutable auto currentTime = Clock.currTime();
+
+	if(fileName.exists)
+	{
+		fileName.setTimes(currentTime, currentTime);
+	}
+	else
+	{
+		auto f = File(fileName, "w+");
+
+		f.write("");
+		fileName.setTimes(currentTime, currentTime);
+	}
+
+	return fileName.exists;
 }
 
 /**
