@@ -15,8 +15,6 @@ import std.typecons;
 
 import dfileutils.file;
 
-alias OverwriteExtractedFiles = Flag!"OverwriteExtractedFiles";
-
 private string getFilesList(T)(T list) pure @safe
 {
 	return "TypeTuple!(" ~ list.map!(a => `"` ~ a ~ `"`).join(",") ~ ")";
@@ -50,7 +48,7 @@ private template GeneratorFileNames(string[] list)
 		extractImportFiles!filesList("myawesomeapp");
 */
 void extractImportFiles(alias list, T = string)(const string path,
-	OverwriteExtractedFiles overwrite = OverwriteExtractedFiles.yes)
+	const Flag!"overwrite" overwrite = Yes.shouldWrite)
 {
 	foreach(name; GeneratorFileNames!(list))
 	{
