@@ -5,12 +5,21 @@ module dfileutils.fileremover;
 
 import std.algorithm;
 import std.file;
+import std.typecons;
 
 struct FileRemover
 {
+	this(Flag!"autoRemove" autoRemove)
+	{
+		autoRemove_ = autoRemove;
+	}
+
 	~this()
 	{
-		removeAll();
+		if(autoRemove_)
+		{
+			removeAll();
+		}
 	}
 
 	void removeAll()
@@ -26,6 +35,7 @@ struct FileRemover
 
 private:
 	string[] files_;
+	Flag!"autoRemove" autoRemove_ = Yes.autoRemove;
 }
 
 unittest
