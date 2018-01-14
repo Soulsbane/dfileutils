@@ -25,7 +25,9 @@ struct FileRemover
 	void removeAll()
 	{
 		import dfileutils.file : removeFileIfExists;
+
 		files_.each!(a => a.removeFileIfExists());
+		files_ = [];
 	}
 
 	void add(const string fileName)
