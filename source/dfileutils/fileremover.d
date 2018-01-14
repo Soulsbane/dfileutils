@@ -7,6 +7,8 @@ import std.algorithm;
 import std.file;
 import std.typecons;
 
+import dfileutils.file : removeFileIfExists;
+
 struct FileRemover
 {
 	this(Flag!"autoRemove" autoRemove)
@@ -22,10 +24,16 @@ struct FileRemover
 		}
 	}
 
+	bool remove(const string fileName)
+	{
+		import darrayutils : remove;
+		files_.remove(fileName);
+
+		return fileName.removeFileIfExists();
+	}
+
 	void removeAll()
 	{
-		import dfileutils.file : removeFileIfExists;
-
 		files_.each!(a => a.removeFileIfExists());
 		files_ = [];
 	}
@@ -56,4 +64,12 @@ unittest
 
 	remover.removeAll();
 	assert(remover.count == 0);
+
+	remover.add("/a/fake/directory");
+	remover.add("/media/data");
+	remover.add("/another/fake/dir");
+	assert(remover.count == 3);
+
+	remover.remove("/another/fake/dir");
+	assert(remover.count == 2);
 }

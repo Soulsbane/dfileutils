@@ -9,3 +9,4 @@ configuration "library" {
 stringImportPaths "source"
 
 dependency "fluent-asserts" version=">=0.6.6"
+dependency "darrayutils" version="*"
