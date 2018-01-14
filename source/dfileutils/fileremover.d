@@ -35,6 +35,11 @@ struct FileRemover
 		files_ ~= fileName;
 	}
 
+	size_t count()
+	{
+		return files_.length;
+	}
+
 private:
 	string[] files_;
 	Flag!"autoRemove" autoRemove_ = Yes.autoRemove;
@@ -47,4 +52,8 @@ unittest
 	remover.add("/a/fake/directory");
 	remover.add("/media/data");
 	remover.add("/another/fake/dir");
+	assert(remover.count == 3);
+
+	remover.removeAll();
+	assert(remover.count == 0);
 }
