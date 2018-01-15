@@ -1,5 +1,5 @@
 /**
-	Keeps a list of files that will be removed on the objects destruction.
+	Maintains a list of files that will be removed on the objects destruction.
 */
 module dfileutils.fileremover;
 
@@ -9,8 +9,17 @@ import std.typecons;
 
 import dfileutils.file : removeFileIfExists;
 
+/**
+	Maintains a list of files that will be removed on the objects destruction.
+*/
 struct FileRemover
 {
+	/**
+
+		Params:
+			autoRemove = Yes.autoRemove to automatically remove files on objects destruction or No.autoRemove otherwise.
+
+	*/
 	this(Flag!"autoRemove" autoRemove) pure nothrow @safe
 	{
 		autoRemove_ = autoRemove;
@@ -24,6 +33,12 @@ struct FileRemover
 		}
 	}
 
+	/**
+		Removes a file that FileRemover is tracking.
+
+		Params:
+			fileName = Name of the file to remove.
+	*/
 	bool remove(const string fileName)
 	{
 		import darrayutils : remove;
@@ -32,17 +47,26 @@ struct FileRemover
 		return fileName.removeFileIfExists();
 	}
 
+	/**
+		Removes all files that FileRemover is tracking.
+	*/
 	void removeAll()
 	{
 		files_.each!(a => a.removeFileIfExists());
 		files_ = [];
 	}
 
+	/**
+		Adds a file that FileRemover will remove automatically.
+	*/
 	void add(const string fileName) pure nothrow @safe
 	{
 		files_ ~= fileName;
 	}
 
+	/**
+		The number of files being tracked for removal.
+	*/
 	size_t count() pure nothrow @safe
 	{
 		return files_.length;
