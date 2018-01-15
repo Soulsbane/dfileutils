@@ -11,7 +11,7 @@ import dfileutils.file : removeFileIfExists;
 
 struct FileRemover
 {
-	this(Flag!"autoRemove" autoRemove)
+	this(Flag!"autoRemove" autoRemove) pure nothrow @safe
 	{
 		autoRemove_ = autoRemove;
 	}
@@ -38,12 +38,12 @@ struct FileRemover
 		files_ = [];
 	}
 
-	void add(const string fileName)
+	void add(const string fileName) pure nothrow @safe
 	{
 		files_ ~= fileName;
 	}
 
-	size_t count()
+	size_t count() pure nothrow @safe
 	{
 		return files_.length;
 	}
