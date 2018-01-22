@@ -47,8 +47,7 @@ private template GeneratorFileNames(string[] list)
 		// Each file will be will be created in this format: ./myawesomeapp/resty/template.lua
 		extractImportFiles!filesList("myawesomeapp");
 */
-void extractImportFiles(alias list, T = string)(const string path,
-	const Flag!"overwrite" overwrite = Yes.shouldWrite)
+void extractImportFiles(alias list, T = string)(const string path, const Flag!"overwrite" overwrite = Yes.overwrite)
 {
 	foreach(name; GeneratorFileNames!(list))
 	{
