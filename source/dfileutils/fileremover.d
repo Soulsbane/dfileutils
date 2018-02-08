@@ -5,7 +5,7 @@ module dfileutils.fileremover;
 
 import std.algorithm;
 import std.file;
-import std.typecons;
+public import std.typecons : Flag, No, Yes;
 
 import dfileutils.file : removeFileIfExists;
 
