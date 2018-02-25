@@ -11,7 +11,7 @@ import std.array : join;
 import std.file : exists, mkdirRecurse;
 import std.path : buildNormalizedPath, dirName;
 import std.typetuple;
-import std.typecons;
+public import std.typecons : Yes, No, Flag;
 
 import dfileutils.file;
 
