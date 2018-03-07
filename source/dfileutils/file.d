@@ -266,7 +266,6 @@ unittest
 	";
 
 	import dfileutils.tempfile;
-	import fluent.asserts;
 
 	TempFile file;
 
@@ -282,7 +281,7 @@ unittest
 	removeLines(tempFileName, "\t\tIn the cicada's cry");
 	lines = readText(tempFileName);
 
-	lines.splitLines.length.should.equal(unmodifiedLength - 2);
+	assert(lines.splitLines.length == (unmodifiedLength - 2));
 }
 
 /**
