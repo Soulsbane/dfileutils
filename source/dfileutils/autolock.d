@@ -15,7 +15,7 @@ struct AutoLockFile
 
 	bool writeln(S...)(S args)
 	{
-		bool locked = fileHandle_.tryLock();
+		immutable bool locked = fileHandle_.tryLock();
 
 		if(locked)
 		{
